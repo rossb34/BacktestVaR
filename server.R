@@ -1,4 +1,3 @@
-
 # This is the server logic for a Shiny web application.
 # You can find out more about building applications with Shiny here:
 # 
@@ -68,88 +67,80 @@ shinyServer(function(input, output) {
   })
   
   ##### Secify and fit GARCH model #####
-#   garchModel <- reactive({
-#     model <- switch(input$model,
-#                     "sGARCH" = "sGARCH",
-#                     "fGARCH" = "fGARCH",
-#                     "eGARCH" = "eGARCH",
-#                     "apARCH" = "apARCH",
-#                     "iGARCH" = "iGARCH",
-#                     "csGARCH" = "csGARCH"
-#     )
-#     
-#     # GARCH Order
-#     q <- input$q
-#     p <- input$pG
-#     
-#     # ARMA Order
-#     ar <- input$ar
-#     ma <- input$ma
-#     
-#     # distribution
-#     dist <- switch(input$dist,
-#                    "normal" = "norm",
-#                    "skew normal" = "snorm",
-#                    "student-t" = "std",
-#                    "skew-student" = "sstd",
-#                    "generalied error" = "ged",
-#                    "skew-generalied error" = "sged",
-#                    "normal inverse gaussian" = "nig",
-#                    "generalized hyperbolic" = "ghyp",
-#                    "Johnson's SU" = "jsu"
-#     )
-#     
-#     # outSample
-#     outSample <- input$outSample
-#     
-#     uvGARCH(R=R(), model=model, garchOrder=c(q,p), armaOrder=c(ar, ma), 
-#             distribution=dist, outSample=outSample)
-#   })
-#   
-#   ##### GARCH Model VaR Backtest
-#   backtestGARCH <- reactive({
-#     backtestVaR.GARCH(garch=garchModel(), p=input$p, refitEvery=input$refitEvery, window=input$window)
-#   })
+   garchModel <- reactive({
+     model <- switch(input$model,
+                     "sGARCH" = "sGARCH",
+                     "fGARCH" = "fGARCH",
+                     "eGARCH" = "eGARCH",
+                     "apARCH" = "apARCH",
+                     "iGARCH" = "iGARCH",
+                     "csGARCH" = "csGARCH"
+     )
+     
+     # GARCH Order
+     q <- input$q
+     p <- input$pG
+     
+     # ARMA Order
+     ar <- input$ar
+     ma <- input$ma
+     
+     # distribution
+     dist <- switch(input$dist,
+                    "normal" = "norm",
+                    "skew normal" = "snorm",
+                    "student-t" = "std",
+                    "skew-student" = "sstd",
+                    "generalied error" = "ged",
+                    "skew-generalied error" = "sged",
+                    "normal inverse gaussian" = "nig",
+                    "generalized hyperbolic" = "ghyp",
+                    "Johnson's SU" = "jsu"
+     )
+     
+     # outSample
+     outSample <- input$outSample
+     
+     uvGARCH(R=R(), model=model, garchOrder=c(q,p), armaOrder=c(ar, ma), 
+             distribution=dist, outSample=outSample)
+   })
+   
+   ##### GARCH Model VaR Backtest
+   backtestGARCH <- reactive({
+     backtestVaR.GARCH(garch=garchModel(), p=input$p, refitEvery=input$refitEvery, window=input$window)
+   })
   
   #####
   
-#   backtestAll <- reactive({
-#     bt <- NULL
-#     if(length(methods()) == 0){
-#       if(input$garch){
-#         # we only have GARCH checked as a method
-#         bt <- backtestGARCH()
-#       }
-#     } else if((length(methods())) > 0 & !(input$garch)){
-#       # we have at least one method, but no GARCH checked
-#       bt <- backtest()
-#     } else if((length(methods()) > 0) & (input$garch)){
-#       # we have at least one method and GARCH checked
-#       bt <- backtest()
-#       btEst <- bt$VaR$estimate
-#       btVio <- bt$VaR$violation
-#       btGARCH <- backtestGARCH()
-#       btEstGARCH <- btGARCH$VaR$estimate
-#       btVioGARCH <- btGARCH$VaR$violation
-#       
-#       # combine the colnames (cbind is making ugly column names)
-#       cnames <- c(colnames(btEst), colnames(btEstGARCH))
-#       
-#       bt$VaR$estimate <- na.omit(cbind(btEst, btEstGARCH))
-#       colnames(bt$VaR$estimate) <- cnames
-#       bt$VaR$violation <- na.omit(cbind(bt$VaR$violation, btGARCH$VaR$violation))
-#       colnames(bt$VaR$violation) <- cnames
-#     }
-#     bt
-#   })
-
-backtestAll <- reactive({
-  bt <- NULL
-  if(length(methods()) > 0){
-    bt <- backtest()
-  }
-  bt
-})
+   backtestAll <- reactive({
+     bt <- NULL
+     if(length(methods()) == 0){
+       if(input$garch){
+         # we only have GARCH checked as a method
+         bt <- backtestGARCH()
+       }
+     } else if((length(methods())) > 0 & !(input$garch)){
+       # we have at least one method, but no GARCH checked
+       bt <- backtest()
+     } else if((length(methods()) > 0) & (input$garch)){
+       # we have at least one method and GARCH checked
+       bt <- backtest()
+       btEst <- bt$VaR$estimate
+       btVio <- bt$VaR$violation
+       btGARCH <- backtestGARCH()
+       btEstGARCH <- btGARCH$VaR$estimate
+       btVioGARCH <- btGARCH$VaR$violation
+       
+       # combine the colnames (cbind is making ugly column names)
+       cnames <- c(colnames(btEst), colnames(btEstGARCH))
+       
+       bt$VaR$estimate <- na.omit(cbind(btEst, btEstGARCH))
+       colnames(bt$VaR$estimate) <- cnames
+       bt$VaR$violation <- na.omit(cbind(bt$VaR$violation, btGARCH$VaR$violation))
+       colnames(bt$VaR$violation) <- cnames
+     }
+     bt
+   })
   
   # Show the backtest results
   output$backtest <- renderPrint({

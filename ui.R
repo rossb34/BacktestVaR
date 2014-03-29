@@ -1,4 +1,3 @@
-
 # This is the user-interface definition of a Shiny web application.
 # You can find out more about building applications with Shiny here:
 # 
@@ -81,37 +80,37 @@ shinyUI(fluidPage(
       checkboxInput('gaussian', 'Gaussian', TRUE),
       checkboxInput('historical', 'Historical', TRUE),
       checkboxInput('modified', 'Modified', TRUE),
-      # checkboxInput('garch', 'GARCH', FALSE),
+      checkboxInput('garch', 'GARCH', FALSE),
       
       # Conditional panel display for GARCH model inputs
-#       conditionalPanel(
-#         condition = "input.garch == true",
-#         ##### Parameters for GARCH model
-#         selectInput("model", "Choose a GARCH Model:", 
-#                     choices = c("sGARCH", "fGARCH", "eGARCH",
-#                                 "gjrGARCH", "apARCH", "iGARCH",
-#                                 "csGARCH")),
-#         tags$hr(),
-#         h6("GARCH Order"),
-#         numericInput("q", "ARCH(q) order:", 1, min=0, max=10, step=1),
-#         numericInput("pG", "GARCH(p) order:", 1, min=0, max=10, step=1),
-#         
-#         tags$hr(),
-#         h6("ARMA Order"),
-#         numericInput("ar", "AR order:", 0, min=0, max=10, step=1),
-#         numericInput("ma", "MA order:", 0, min=0, max=10, step=1),
-#         
-#         tags$hr(),
-#         selectInput("dist", "Choose a distribution:", 
-#                     choices = c("normal", "skew normal", "student-t",
-#                                 "skew-student", "generalized error", 
-#                                 "skew-generalized error",
-#                                 "normal inverse gaussian", "generalized hyperbolic",
-#                                 "Johnson's SU")),
-#         tags$hr(),
-#         numericInput("outSample", "Out of sample points:", 0, min=0, max=1000, step=1),
-#         numericInput("refitEvery", "Number of periods to re-estimate the model:", 20, min=1, max=1000, step=1)
-#       ),
+       conditionalPanel(
+         condition = "input.garch == true",
+         ##### Parameters for GARCH model
+         selectInput("model", "Choose a GARCH Model:", 
+                     choices = c("sGARCH", "fGARCH", "eGARCH",
+                                 "gjrGARCH", "apARCH", "iGARCH",
+                                 "csGARCH")),
+         tags$hr(),
+         h6("GARCH Order"),
+         numericInput("q", "ARCH(q) order:", 1, min=0, max=10, step=1),
+         numericInput("pG", "GARCH(p) order:", 1, min=0, max=10, step=1),
+         
+         tags$hr(),
+         h6("ARMA Order"),
+         numericInput("ar", "AR order:", 0, min=0, max=10, step=1),
+         numericInput("ma", "MA order:", 0, min=0, max=10, step=1),
+         
+         tags$hr(),
+         selectInput("dist", "Choose a distribution:", 
+                     choices = c("normal", "skew normal", "student-t",
+                                 "skew-student", "generalized error", 
+                                 "skew-generalized error",
+                                 "normal inverse gaussian", "generalized hyperbolic",
+                                 "Johnson's SU")),
+         tags$hr(),
+         numericInput("outSample", "Out of sample points:", 0, min=0, max=1000, step=1),
+         numericInput("refitEvery", "Number of periods to re-estimate the model:", 20, min=1, max=1000, step=1)
+       ),
       
       #submitButton("Update View")
       tags$hr(),

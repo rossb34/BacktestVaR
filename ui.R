@@ -137,9 +137,9 @@ shinyUI(fluidPage(
                  h4("VaR Violations"),
                  verbatimTextOutput("violations")),
         tabPanel("Data", 
-                 h4("Selected Data for VaR Backtest"),
+                 h4("Selected Data for VaR Backtest (displaying first 6 observations)"),
                  verbatimTextOutput("selectedData"),
-                 h4("Available Data"),
+                 h4("Available Data (displaying first 6 observations)"),
                  verbatimTextOutput("rawData")
         )
       )
